@@ -1,9 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Typography, Container, Snackbar, Alert } from "@mui/material";
+import { Typography, Container, Snackbar, Alert ,Card, CardContent, Grid, CircularProgress,Paper} from "@mui/material";
 import Layout from "./Layout";
-import Card from "./Cards/card";
 
 export default function Dashboard() {
   const [employeeDetails, setEmployeeDetails] = useState(null);
@@ -49,43 +48,62 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <Container>
-        <Typography variant="h3" gutterBottom>
-          Welcome to Employee Management System
+    <Container maxWidth="md" sx={{ mt: 5 }}>
+    <Paper elevation={6} sx={{ p: 4, borderRadius: 3, textAlign: "center", bgcolor: "#f5f5f5" }}>
+      <Typography variant="h3" fontWeight="bold" color="primary" gutterBottom>
+        Dashboard
+      </Typography>
+
+      {loading ? (
+        <CircularProgress color="secondary" />
+      ) : error ? (
+        <Typography color="error" variant="h6" sx={{ mt: 2 }}>
+          Error: {error}
         </Typography>
-        <div>
-          <Card />
-        </div>
+      ) : (
+        <Card elevation={3} sx={{ maxWidth: 500, mx: "auto", mt: 3, borderRadius: 3 }}>
+          <CardContent>
+            <Typography variant="h5" fontWeight="bold" color="secondary" gutterBottom>
+              Employee Details
+            </Typography>
+            <Grid container spacing={2} sx={{ textAlign: "left" }}>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Name:</strong> {employeeDetails.name}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Email:</strong> {employeeDetails.email}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Role:</strong> {employeeDetails.role}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Location:</strong> {employeeDetails.location}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Department:</strong> {employeeDetails.department || "Not Assigned"}
+                </Typography>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Card>
+      )}
+    </Paper>
 
-        {loading ? (
-          <Typography>Loading...</Typography>
-        ) : error ? (
-          <Typography color="error">Error: {error}</Typography>
-        ) : (
-          <div>
-            <Typography variant="h5">Employee Details</Typography>
-            <Typography>Name: {employeeDetails.name}</Typography>
-            <Typography>Email: {employeeDetails.email}</Typography>
-            <Typography>Role: {employeeDetails.role}</Typography>
-            <Typography>Location: {employeeDetails.location}</Typography>
-            <Typography>Department: {employeeDetails.department || "Not Assigned"}</Typography>
-          </div>
-        )}
-
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={6000}
-          onClose={handleCloseSnackbar}
-        >
-          <Alert
-            onClose={handleCloseSnackbar}
-            severity={snackbarSeverity}
-            sx={{ width: "100%" }}
-          >
-            {snackbarMessage}
-          </Alert>
-        </Snackbar>
-      </Container>
+    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+      <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: "100%" }}>
+        {snackbarMessage}
+      </Alert>
+    </Snackbar>
+  </Container>
     </Layout>
   );
 }

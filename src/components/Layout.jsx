@@ -29,10 +29,10 @@ export default function Layout({ children }) {
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          marginLeft: isMobile ? 0 : "240px", // Adjust margin based on sidebar visibility
+          marginLeft: isMobile ? 0 : "2vw", // Adjust margin based on sidebar visibility
           transition: "margin-left 0.3s ease-in-out", // Smooth transition for opening/closing sidebar
         }}
-      >
+      >  
         <Navbar toggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Adjust content margin-top so it doesn't get hidden behind the navbar */}

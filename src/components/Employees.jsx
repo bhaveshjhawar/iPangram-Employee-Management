@@ -21,8 +21,11 @@ import {
   MenuItem,
   IconButton,
   Snackbar,
+  FormControl,
+  InputLabel,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
+import { Edit } from "@mui/icons-material";
 import Layout from "./Layout";
 
 export default function Employees() {
@@ -104,7 +107,7 @@ export default function Employees() {
       const headers = { Authorization: `Bearer ${token}` };
       const order = sortByNameOrder === "asc" ? "desc" : "asc"; // Toggle order
       const response = await axios.get(`${BASEURL}/api/employees/filter/name?order=${order}`, { headers });
-      
+
       // Update state with the sorted employees
       setSortedEmployees(response.data);
       setSortByNameOrder(order); // Update the sort order to the new one
@@ -203,6 +206,9 @@ export default function Employees() {
                       <TableCell>{(employee.department ? employee.department.charAt(0).toUpperCase() + employee.department.slice(1) : "Not Assigned")}</TableCell>
 
                       <TableCell>
+                        <IconButton color="primary" >
+                          <Edit />
+                        </IconButton>
                         <IconButton
                           onClick={(e) => {
                             e.stopPropagation();
@@ -233,13 +239,20 @@ export default function Employees() {
           <DialogContent>
             <TextField label="Name" fullWidth name="name" value={updatedEmployee.name || ""} onChange={handleUpdateChange} sx={{ mb: 2 }} />
             <TextField label="Location" fullWidth name="location" value={updatedEmployee.location || ""} onChange={handleUpdateChange} sx={{ mb: 2 }} />
-            <Select fullWidth name="department" value={updatedEmployee.department || ""} onChange={handleUpdateChange} sx={{ mb: 2 }}>
-              {departments.map((dept) => (
-                <MenuItem key={dept._id} value={dept.name}>
-                  {dept.name}
-                </MenuItem>
-              ))}
-            </Select>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+  <InputLabel>Department</InputLabel>
+  <Select
+    name="department"
+    value={updatedEmployee.department || ""}
+    onChange={handleUpdateChange}
+  >
+    {departments.map((dept) => (
+      <MenuItem key={dept._id} value={dept.name}>
+        {dept.name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setSelectedEmployee(null)}>Cancel</Button>
